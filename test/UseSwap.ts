@@ -1,10 +1,6 @@
-import {
-  time,
-  loadFixture,
-} from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import {ethers} from "hardhat";
 const helpers = require("@nomicfoundation/hardhat-network-helpers");
 
 describe("UseSwap", function () {
@@ -17,14 +13,23 @@ describe("UseSwap", function () {
     const [owner] = await ethers.getSigners();
     const ROUTER_ADDRESS = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 
-    const UseSwap = await hre.ethers.getContractFactory("UseSwap");
+    const UseSwap = await ethers.getContractFactory("UseSwap");
     const useSwap = await UseSwap.deploy(ROUTER_ADDRESS);
 
     return { useSwap, owner, ROUTER_ADDRESS };
   }
 
   describe("Deployment", function () {
-    it("Should set the right router address", async function () {
+
+    it("Should set the right router address",async function () {
+      const { useSwap, ROUTER_ADDRESS } = await loadFixture(deployUseSwap);
+
+
+      expect(await useSwap.uniswapRouter()).to.equal(ROUTER_ADDRESS);
+      
+    })
+
+    it("Should swap tokens for exact tokens", async function () {
       const { useSwap, ROUTER_ADDRESS } = await loadFixture(deployUseSwap);
 
       const USDC = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";

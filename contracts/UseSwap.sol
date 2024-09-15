@@ -8,6 +8,8 @@ contract UseSwap {
     address public uniswapRouter;
     address public owner;
     uint public swapCount;
+    uint public swapCountToken;
+
 
     constructor(address _uniswapRouter) {
         uniswapRouter = _uniswapRouter;
@@ -35,5 +37,28 @@ contract UseSwap {
         );
 
         swapCount += 1;
+    }
+
+    function handleSwapToken(
+        uint amountIn,
+        uint amountOutMin,
+        address[] calldata path,
+        address to,
+        uint deadline
+    ) external {
+
+        IERC20(path[0]).transferFrom(msg.sender, address(this), amountIn);
+
+        require(IERC20(path[0]).approve(uniswapRouter, amountOutMin), "approve failed.");
+        
+        IUniswapV2Router(uniswapRouter).swapExactTokensForTokens(
+            amountIn,
+            amountOutMin,
+            path,
+            to,
+            deadline
+        );
+
+        swapCountToken += 1;
     }
 }
