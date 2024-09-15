@@ -10,10 +10,10 @@ const main = async () => {
   await helpers.impersonateAccount(USDCHolder);
   const impersonatedSigner = await ethers.getSigner(USDCHolder);
 
-  const amountUSDC = ethers.parseUnits("1000", 6);
-  const amountDAI = ethers.parseUnits("1000", 18);
-  const amountUSDCMin = ethers.parseUnits("950", 6);
-  const amountDAIMin = ethers.parseUnits("950", 18);
+  const amountUSDC = ethers.parseUnits("10000", 6);
+  const amountDAI = ethers.parseUnits("10000", 18);
+  const amountUSDCMin = ethers.parseUnits("9000", 6);
+  const amountDAIMin = ethers.parseUnits("9000", 18);
   const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
   const USDC = await ethers.getContractAt(
