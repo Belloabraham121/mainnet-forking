@@ -61,4 +61,14 @@ interface IUniswapV2Router {
         address to,
         uint deadline
       ) external returns (uint amountToken, uint amountETH);
+
+      function removeLiquidityETHWithPermit(
+        address token,
+        uint liquidity,
+        uint amountTokenMin,
+        uint amountETHMin,
+        address to,
+        uint deadline,
+        bool approveMax, uint8 v, bytes32 r, bytes32 s
+      ) external returns (uint amountToken, uint amountETH);
 }
