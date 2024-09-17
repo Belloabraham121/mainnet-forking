@@ -9,6 +9,7 @@ contract UseSwap {
     address public owner;
     uint public swapCount;
     uint public swapCountToken;
+    uint public liquidityCount;
 
 
     constructor(address _uniswapRouter) {
@@ -61,4 +62,36 @@ contract UseSwap {
 
         swapCountToken += 1;
     }
+
+    function handleAddLiquidity(
+        address tokenA,
+        address tokenB,
+        uint amountADesired,
+        uint amountBDesired,
+        uint amountAMin,
+        uint amountBMin,
+        address to,
+        uint deadline
+    ) external {
+
+        IERC20(tokenA).transferFrom(msg.sender, address(this), amountADesired);
+        IERC20(tokenB).transferFrom(msg.sender, address(this), amountBDesired);
+
+        require(IERC20(tokenA).approve(uniswapRouter, amountADesired), "approve failed.");
+        require(IERC20(tokenB).approve(uniswapRouter, amountBDesired), "approve failed.");
+
+        IUniswapV2Router(uniswapRouter).addLiquidity(
+            tokenA,
+            tokenB,
+            amountADesired,
+            amountBDesired,
+            amountAMin,
+            amountBMin,
+            to,
+            deadline
+        );
+
+        liquidityCount += 1;
+    }
+
 }
